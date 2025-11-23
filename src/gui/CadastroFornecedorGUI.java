@@ -1,4 +1,7 @@
-package entidades;
+package gui;
+
+import entidades.Area;
+import entidades.Fornecedor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -64,7 +67,7 @@ public class CadastroFornecedorGUI extends JFrame {
         botaoMostrar.addActionListener(e -> mostrarFornecedores());
         botaoFechar.addActionListener(e -> dispose());
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(500, 350);
         setLocationRelativeTo(null);
         setVisible(true);
