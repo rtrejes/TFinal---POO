@@ -1,7 +1,5 @@
 package entidades;
 
-import java.util.Objects;
-
 public class Tecnologia implements Comparable<Tecnologia> {
     private long id;
     private String nome;
@@ -69,9 +67,11 @@ public class Tecnologia implements Comparable<Tecnologia> {
     public void setTemperatura(double temperatura) {
         this.temperatura = temperatura;
     }
+
     public Fornecedor getFornecedor() {
         return fornecedorSelecionado;
     }
+
     public void defineFornecedor(Fornecedor fornecedorSelecionado) {
         this.fornecedorSelecionado = fornecedorSelecionado;
     }
@@ -81,10 +81,14 @@ public class Tecnologia implements Comparable<Tecnologia> {
         return "ID: " + id +
                 ",\n Modelo: '" + modelo + '\'' +
                 ",\n Descrição: '" + descricao + '\'' +
-                ",\n Valor Base: " +  valorBase +
-                ",\n Peso: " +  peso +
-                ",\n Temperatura: " +  temperatura +
+                ",\n Valor Base: " + valorBase +
+                ",\n Peso: " + peso +
+                ",\n Temperatura: " + temperatura +
                 (fornecedorSelecionado != null ? ", entidades.Fornecedor: " + fornecedorSelecionado.getNome() : "");
+    }
+
+    public String geraDescricao() {
+        return null; // TODO
     }
 
     @Override
@@ -94,10 +98,10 @@ public class Tecnologia implements Comparable<Tecnologia> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o){
+        if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()){
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
         Tecnologia that = (Tecnologia) o;
@@ -109,4 +113,3 @@ public class Tecnologia implements Comparable<Tecnologia> {
         return Long.hashCode(id);
     }
 }
-
