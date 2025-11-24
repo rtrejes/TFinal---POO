@@ -1,11 +1,14 @@
 package entidades;
+import java.io.Serializable;
 
-public abstract class Participante {
+public abstract class Participante implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private long cod;
     private String nome;
 
-    public Participante(long codigo, String nome) {
-        this.cod = codigo;
+    public Participante(long cod, String nome) {
+        this.cod = cod;
         this.nome = nome;
     }
 
@@ -15,6 +18,10 @@ public abstract class Participante {
 
     public String getNome() {
         return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public abstract String geraDescricao();
