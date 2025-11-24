@@ -30,7 +30,7 @@ public class CadastroTecnologiaGUI extends JFrame implements ActionListener {
 
         defineFornecedor();
 
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(700, 600);
         setLayout(new BorderLayout(10, 10));
         setLocationRelativeTo(null);
@@ -140,7 +140,7 @@ public class CadastroTecnologiaGUI extends JFrame implements ActionListener {
         } else if (e.getSource() == btnMostrarTodos) {
             mostrarTodosCadastros();
         } else if (e.getSource() == btnFechar) {
-            System.exit(0);
+            dispose();
         }
     }
 
