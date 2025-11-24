@@ -7,24 +7,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Date;
+import java.util.*;
 
-public class CadastroTecnologia extends JFrame implements ActionListener {
+public class CadastroTecnologiaGUI extends JFrame implements ActionListener {
 
     private JTextField campoId, campoNome, campoModelo, campoDesc, campoValorBase, campoPeso, campoTemperatura;
     private JComboBox<Fornecedor> comboFornecedor;
     private JTextArea areaMensagens;
     private JButton btnCadastrar, btnLimpar, btnMostrarTodos, btnFechar;
     private ArrayList<Tecnologia> listaTecnologias;
-    private HashMap<Integer, Boolean> controleIds;
+    private HashMap<Long, Boolean> controleIds;
     private ArrayList<Fornecedor> listaFornecedores;
 
 
-    public CadastroTecnologia() {
+    public CadastroTecnologiaGUI() {
         super("Nova entidades.Tecnologia - Cadastro");
 
         listaTecnologias = new ArrayList<>();
@@ -52,13 +50,20 @@ public class CadastroTecnologia extends JFrame implements ActionListener {
 
         setVisible(true);
     }
+    private Date criarData(String dataTexto) {
+        try {
+            return new SimpleDateFormat("dd/MM/yyyy").parse(dataTexto);
+        } catch (ParseException e) {
+            return new Date();
+        }
+    }
 
     private void defineFornecedor() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         listaFornecedores = new ArrayList<>();
-        listaFornecedores.add(new Fornecedor(103,"Google", new Date(2024, 2, 29), Area.ANDROIDES));
-        listaFornecedores.add(new Fornecedor(102, "Microsoft", new Date(2019,8,21),Area.TI));
-        listaFornecedores.add(new Fornecedor(101, "Oracle", new Date(14,8,12),Area.TI));
+        listaFornecedores.add(new Fornecedor(103,"Google", criarData("29/02/2024"), Area.ANDROIDES));
+        listaFornecedores.add(new Fornecedor(102, "Microsoft", criarData("21/08/2019"),Area.TI));
+        listaFornecedores.add(new Fornecedor(101, "Oracle", criarData("12/08/2014"),Area.TI));
     }
 
     private JPanel criarPainelCampos() {
@@ -152,40 +157,42 @@ public class CadastroTecnologia extends JFrame implements ActionListener {
             double peso =  Double.parseDouble(campoPeso.getText().trim());
             double temperatura = Double.parseDouble(campoTemperatura.getText().trim());
             Fornecedor fornecedorSelecionado = (Fornecedor) comboFornecedor.getSelectedItem();
-
-            if (aux.isEmpty() || modelo.isEmpty() || fornecedorSelecionado == null) {
-                throw new IllegalArgumentException("Erro: Preencha todos os campos obrigatórios (ID, Modelo e entidades.Fornecedor).");
+            if (aux.isEmpty() || fornecedorSelecionado == null) {
+                throw new IllegalArgumentException("Erro: Preencha todos os campos obrigatórios.");
             }
-            int id = Integer.parseInt(aux);
-
-            if (controleIds.containsKey(id)) {
-                areaMensagens.append(" ERRO DE CADASTRO:\n");
-                areaMensagens.append(" O identificador (ID)" + id + " já está cadastrado no sistema.\n");
-                areaMensagens.append(" Tente um ID diferente.");
-                return;
+            if (aux.isEmpty() || campoValorBase.getText().isEmpty()) {
+                throw new IllegalArgumentException("Campos obrigatórios vazios.");
             }
+                long id = Long.parseLong(campoId.getText());
 
-            Tecnologia novaTec = new Tecnologia(id, nome, modelo, descricao, valorBase, peso, temperatura);
-            novaTec.defineFornecedor(fornecedorSelecionado);
+                if (controleIds.containsKey(id)) {
+                    areaMensagens.append(" ERRO DE CADASTRO:\n");
+                    areaMensagens.append(" O identificador (ID)" + id + " já está cadastrado no sistema.\n");
+                    areaMensagens.append(" Tente um ID diferente.");
+                    return;
+                }
 
-            listaTecnologias.add(novaTec);
-            controleIds.put(id, true);
-            areaMensagens.append("  -- CADASTRO REALIZADO COM SUCESSO! -- \n");
-            areaMensagens.append("     Nova entidades.Tecnologia: " + novaTec.toString());
 
-            //limparCampos();
+                Tecnologia novaTec = new Tecnologia(id, nome, modelo, descricao, valorBase, peso, temperatura);
+                novaTec.defineFornecedor(fornecedorSelecionado);
 
-        } catch (NumberFormatException e) {
-            areaMensagens.append("  ERRO DE ENTRADA:\n");
-            areaMensagens.append("  Os campos ID, Valor Base, Peso e Temperatura devem ser composto apenas por números. Detalhe: " + e.getMessage());
-        } catch (IllegalArgumentException e) {
-            areaMensagens.append("  ERRO DE VALIDAÇÃO:\n");
-            areaMensagens.append("    " + e.getMessage());
-        } catch (Exception e) {
-            areaMensagens.append(" ERRO NO SISTEMA:\n");
-            areaMensagens.append(" Detalhes: " + e.getMessage());
+                listaTecnologias.add(novaTec);
+                controleIds.put(id, true);
+                areaMensagens.append("  -- CADASTRO REALIZADO COM SUCESSO! -- \n");
+                areaMensagens.append("     Nova entidades.Tecnologia: " + novaTec.toString());
+
+            } catch(NumberFormatException e){
+                areaMensagens.append("  ERRO DE ENTRADA:\n");
+                areaMensagens.append("  Os campos ID, Valor Base, Peso e Temperatura devem ser composto apenas por números. Detalhe: " + e.getMessage());
+            } catch(IllegalArgumentException e){
+                areaMensagens.append("  ERRO DE VALIDAÇÃO:\n");
+                areaMensagens.append("    " + e.getMessage());
+            } catch(Exception e){
+                areaMensagens.append(" ERRO NO SISTEMA:\n");
+                areaMensagens.append(" Detalhes: " + e.getMessage());
+            }
         }
-    }
+
 
     private void limparCampos() {
         campoId.setText("");
