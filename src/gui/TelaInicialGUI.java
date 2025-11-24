@@ -26,14 +26,17 @@ public class TelaInicialGUI extends JFrame {
         super("ACMETech - Venda de tecnologias");
         this.app = app;
 
-        JLabel bannerAnimado = new JLabel(new ImageIcon("src/recursos/ACME-animacao.gif"));
+        // Carrega as palhaçadas para dar risada
+        JLabel bannerAnimado = new JLabel(new ImageIcon("resources/ACME-animacao.gif"));
         bannerAnimado.setPreferredSize(new Dimension(400, 270));
 
-        ImageIcon fotoProf = new ImageIcon("src/recursos/Marcelo_Yamaguti2.jpeg");
+        // Imagem do professor Marcelo Yamaguti - Direita
+        ImageIcon fotoProf = new ImageIcon("resources/Marcelo_Yamaguti2.jpeg");
         Image img = fotoProf.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
         JLabel labelFoto = new JLabel(new ImageIcon(img));
 
-        ImageIcon fotoProf2 = new ImageIcon("src/recursos/Marcelo_Yamaguti.jpg");
+        // Imagem do professor Marcelo Yamaguti - Esquerda
+        ImageIcon fotoProf2 = new ImageIcon("resources/Marcelo_Yamaguti.jpg");
         Image img2 = fotoProf2.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
         JLabel labelEsquerda = new JLabel(new ImageIcon(img2));
 
@@ -275,7 +278,7 @@ public class TelaInicialGUI extends JFrame {
             // Encerrar
         botaoSair.addActionListener(e -> System.exit(0));
 
-        tocarMusica("src/recursos/Background_calm.wav");
+        tocarMusica("resources/Background_calm.wav");
     }
 
     private void abrirRelatorio(String tituloJanela, Relatorio relatorio) {
