@@ -1,14 +1,17 @@
 package gui;
 
+import entidades.Area;
 import entidades.Fornecedor;
 import entidades.Tecnologia;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Date;
 
 public class CadastroTecnologia extends JFrame implements ActionListener {
 
@@ -41,16 +44,6 @@ public class CadastroTecnologia extends JFrame implements ActionListener {
         JScrollPane scrollMensagens = new JScrollPane(areaMensagens);
         scrollMensagens.setBorder(BorderFactory.createTitledBorder("Área de Logs e Cadastros"));
 
-        StringBuilder sb = new StringBuilder();
-
-        for (Fornecedor f : listaFornecedores) {
-            sb.append("Código: ").append(f.getCod()).append("\n");
-            sb.append("Nome: ").append(f.getNome()).append("\n");
-            sb.append("Área: ").append(f.getArea()).append("\n");
-            sb.append("Fundação: ").append(f.getFundacao()).append("\n");
-            sb.append("--------------------------\n");
-        }
-
         JPanel painelBotoes = criarPainelBotoes();
 
         add(painelCampos, BorderLayout.NORTH);
@@ -61,10 +54,11 @@ public class CadastroTecnologia extends JFrame implements ActionListener {
     }
 
     private void defineFornecedor() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         listaFornecedores = new ArrayList<>();
-        listaFornecedores.add(new Fornecedor(103,"Google", "1999", "ANDROID"));
-        listaFornecedores.add(new Fornecedor(102, "Microsoft","TI"));
-        listaFornecedores.add(new Fornecedor(101, "Oracle", "TI"));
+        listaFornecedores.add(new Fornecedor(103,"Google", new Date(2024, 2, 29), Area.ANDROIDES));
+        listaFornecedores.add(new Fornecedor(102, "Microsoft", new Date(2019,8,21),Area.TI));
+        listaFornecedores.add(new Fornecedor(101, "Oracle", new Date(14,8,12),Area.TI));
     }
 
     private JPanel criarPainelCampos() {
