@@ -1,5 +1,6 @@
 package gui;
 
+import aplicacao.ACMETech;
 import entidades.Area;
 import entidades.Fornecedor;
 
@@ -8,17 +9,18 @@ import java.awt.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TreeSet;
+import java.util.Set;
 
 public class CadastroFornecedorGUI extends JFrame {
+    private ACMETech app;
     private JTextField txtCodigo, txtNome, txtFundacao;
     private SimpleDateFormat sdfFundacao = new SimpleDateFormat("dd/MM/yyyy");
     private JComboBox<Area> comboArea;
     private JTextArea txtMensagens;
-    private TreeSet<Fornecedor> fornecedores = new TreeSet<>();
 
-    public CadastroFornecedorGUI() {
+    public CadastroFornecedorGUI(ACMETech app) {
         super("Cadastro de Fornecedor");
+        this.app = app;
 
         setLayout(new BorderLayout(10,10));
 
@@ -83,12 +85,10 @@ public class CadastroFornecedorGUI extends JFrame {
             }
             Date fundacao = sdfFundacao.parse(txtFundacao.getText());
             Area area = (Area) comboArea.getSelectedItem();
-            Fornecedor fornecedor = new Fornecedor(codigo, nome, fundacao, area);
-
-            if (!fornecedores.add(fornecedor)){
-                txtMensagens.append("Erro: código já cadastrado! \n");
-            } else {
+            if (app.cadastrarFornecedor(codigo, nome, fundacao, area)){
                 txtMensagens.append("Fornecedor cadastrado com sucesso! \n");
+            } else {
+                txtMensagens.append("Erro: código já cadastrado! \n");
             }
         } catch (NumberFormatException e){
             txtMensagens.append("Erro: código deve ser numérico.\n");
@@ -109,6 +109,7 @@ public class CadastroFornecedorGUI extends JFrame {
 
     private void mostrarFornecedores() {
         txtMensagens.setText("");
+        Set<Fornecedor> fornecedores = app.getFornecedores();
         if (fornecedores.isEmpty()) {
             txtMensagens.append("Nenhum fornecedor cadastrado!\n");
         } else {

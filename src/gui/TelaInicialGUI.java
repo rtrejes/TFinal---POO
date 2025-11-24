@@ -1,11 +1,13 @@
 package gui;
 
 import aplicacao.ACMETech;
+import entidades.Relatorio;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class TelaInicialGUI extends JFrame {
+    private ACMETech app;
     private CadastroFornecedorGUI cadastroFornecedorGUI;
     private CadastroTecnologiaGUI cadastroTecnologiaGUI;
     private CadastroCompradorGUI cadastroCompradorGUI;
@@ -15,8 +17,9 @@ public class TelaInicialGUI extends JFrame {
     private AlterarCompradorGUI alterarCompradorGUI;
     private ConsultaMaiorGUI consultaMaiorGUI;
 
-    public TelaInicialGUI() {
+    public TelaInicialGUI(ACMETech app) {
         super("ACMETech - Venda de tecnologias");
+        this.app = app;
 
         setSize(800, 600);
         setLayout(new BorderLayout());
@@ -87,7 +90,7 @@ public class TelaInicialGUI extends JFrame {
         painelSair.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
         painelSair.add(botaoSair);
 
-        // Adicionar tudo ao Painel Principal
+        // Adiciona tudo no Painel Principal
         painelPrincipal.add(painelCadastros);
         painelPrincipal.add(Box.createVerticalStrut(10));
         painelPrincipal.add(painelRelatorios);
@@ -105,7 +108,7 @@ public class TelaInicialGUI extends JFrame {
             // Cadastros
         botaoFornecedor.addActionListener(e -> {
             if (cadastroFornecedorGUI == null) {
-                cadastroFornecedorGUI = new CadastroFornecedorGUI();
+                cadastroFornecedorGUI = new CadastroFornecedorGUI(app);
 
                 cadastroFornecedorGUI.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
@@ -153,7 +156,7 @@ public class TelaInicialGUI extends JFrame {
         });
         botaoVenda.addActionListener(e -> {
             if (cadastroVendaGUI == null) {
-                cadastroVendaGUI = new CadastroVendaGUI();
+                cadastroVendaGUI = new CadastroVendaGUI(app);
 
                 cadastroVendaGUI.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
@@ -169,15 +172,60 @@ public class TelaInicialGUI extends JFrame {
         });
 
             // Relatorios
-        botaoRelatorioFornecedor.addActionListener(e -> abrirRelatorio("Relatório de Fornecedores"));
-        botaoRelatorioTecnologia.addActionListener(e -> abrirRelatorio("Relatório de Tecnologias"));
-        botaoRelatorioComprador.addActionListener(e -> abrirRelatorio("Relatório de Compradores"));
-        botaoRelatorioVenda.addActionListener(e -> abrirRelatorio("Relatório de Vendas"));
+        botaoRelatorioFornecedor.addActionListener(e -> abrirRelatorio("Relatório de Fornecedores", Relatorio.FORNECEDOR));
+        botaoRelatorioTecnologia.addActionListener(e -> abrirRelatorio("Relatório de Tecnologias", Relatorio.TECNOLOGIA));
+        botaoRelatorioComprador.addActionListener(e -> abrirRelatorio("Relatório de Compradores", Relatorio.COMPRADOR));
+        botaoRelatorioVenda.addActionListener(e -> abrirRelatorio("Relatório de Vendas", Relatorio.VENDA));
 
             // Remover/Alterar/Consultar
-        botaoRemoverVenda.addActionListener(e -> new RemoverVendaGUI());
-        botaoAlterarComprador.addActionListener(e -> new AlterarCompradorGUI());
-        botaoConsultaMaior.addActionListener(e -> new ConsultaMaiorGUI());
+        botaoRemoverVenda.addActionListener(e -> {
+            if (removerVendaGUI == null) {
+                removerVendaGUI = new RemoverVendaGUI();
+
+                removerVendaGUI.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        removerVendaGUI = null;
+                    }
+                });
+            } else {
+                removerVendaGUI.toFront();
+                removerVendaGUI.requestFocus();
+            }
+            removerVendaGUI.setVisible(true);
+        });
+        botaoAlterarComprador.addActionListener(e -> {
+            if (alterarCompradorGUI == null) {
+                alterarCompradorGUI = new AlterarCompradorGUI();
+
+                alterarCompradorGUI.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        alterarCompradorGUI = null;
+                    }
+                });
+            } else {
+                alterarCompradorGUI.toFront();
+                alterarCompradorGUI.requestFocus();
+            }
+            alterarCompradorGUI.setVisible(true);
+        });
+        botaoConsultaMaior.addActionListener(e -> {
+            if (consultaMaiorGUI == null) {
+                consultaMaiorGUI = new ConsultaMaiorGUI();
+
+                consultaMaiorGUI.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        consultaMaiorGUI = null;
+                    }
+                });
+            } else {
+                consultaMaiorGUI.toFront();
+                consultaMaiorGUI.requestFocus();
+            }
+            consultaMaiorGUI.setVisible(true);
+        });
 
             // Salvar e Carregar
         botaoSalvar.addActionListener(e -> JOptionPane.showMessageDialog(this, "Salvar dados ainda precisa ser implementado!"));        // TODO
@@ -187,10 +235,9 @@ public class TelaInicialGUI extends JFrame {
         botaoSair.addActionListener(e -> System.exit(0));
     }
 
-    private void abrirRelatorio(String tituloJanela) {
-
+    private void abrirRelatorio(String tituloJanela, Relatorio relatorio) {
         if (relatoriosGUI == null) {
-            relatoriosGUI = new RelatoriosGUI();
+            relatoriosGUI = new RelatoriosGUI(app);
 
             relatoriosGUI.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
@@ -200,15 +247,7 @@ public class TelaInicialGUI extends JFrame {
             });
         }
 
-        String resultado = switch (tituloJanela){
-        // Determina qual relatório vai fazer
-        case "Relatório de Fornecedores" -> ACMETech.gerarRelatorioFornecedores();
-        case "Relatório de Tecnologias" -> ACMETech.gerarRelatorioTecnologias();
-        case "Relatório de Compradores" -> ACMETech.gerarRelatorioCompradores();
-        case "Relatório de Vendas" -> ACMETech.gerarRelatorioVendas();
-        default -> "Relatório inválido";
-        };
-
+        String resultado = app.gerarRelatorio(relatorio);
 
         relatoriosGUI.setTitle(tituloJanela);
         relatoriosGUI.setConteudo(resultado);

@@ -1,12 +1,16 @@
 package gui;
 
+import aplicacao.ACMETech;
+
 import javax.swing.*;
 
 public class RelatoriosGUI extends JFrame {
     private JTextArea areaTexto;
+    private ACMETech app;
 
-    public RelatoriosGUI() {
+    public RelatoriosGUI(ACMETech app) {
         super("Relatórios");
+        this.app = app;
         setSize(600, 400);
         setLocationRelativeTo(null);
 

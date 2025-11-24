@@ -2,12 +2,11 @@ package entidades;
 
 import java.text.SimpleDateFormat;
 
-public class Tecnologia extends Participante{
+public class Tecnologia{
     public Tecnologia(long codigo, String nome) {
-        super(codigo, nome); // TODO
+        // TODO
     }
 
-    @Override
     public String geraDescricao() {
         return null; // TODO
     }
