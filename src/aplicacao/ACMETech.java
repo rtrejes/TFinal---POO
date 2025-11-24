@@ -2,7 +2,6 @@ package aplicacao;
 
 import entidades.*;
 import gui.*;
-
 import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
