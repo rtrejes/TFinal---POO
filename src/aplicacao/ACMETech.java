@@ -24,6 +24,14 @@ public class ACMETech {
         return compradores;
     }
 
+    public Set<Tecnologia> getTecnologias() {
+        return tecnologias;
+    }
+
+    public Set<Venda> getVendas() {
+        return vendas;
+    }
+
     public boolean cadastrarFornecedor(long codigo, String nome, Date fundacao, Area area) {
         Fornecedor novoFornecedor = new Fornecedor(codigo, nome, fundacao, area);
         return fornecedores.add(novoFornecedor);
@@ -36,6 +44,10 @@ public class ACMETech {
 
     public boolean cadastrarTecnologia(long id, String nome, String modelo, String descricao, double valorBase, double peso, double temperatura) {
         Tecnologia novaTecnologia = new Tecnologia(id, nome, modelo, descricao, valorBase, peso, temperatura);
+        return tecnologias.add(novaTecnologia);
+    }
+
+    public boolean cadastrarTecnologia(Tecnologia novaTecnologia) {
         return tecnologias.add(novaTecnologia);
     }
 

@@ -4,6 +4,7 @@ import aplicacao.ACMETech;
 import entidades.Area;
 import entidades.Fornecedor;
 import entidades.Tecnologia;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,8 +19,6 @@ public class CadastroTecnologiaGUI extends JFrame implements ActionListener {
     private JComboBox<Fornecedor> comboFornecedor;
     private JTextArea areaMensagens;
     private JButton btnCadastrar, btnLimpar, btnMostrarTodos, btnFechar;
-    private ArrayList<Tecnologia> listaTecnologias;
-    private HashMap<Long, Boolean> controleIds;
     private ACMETech app;
 
 
@@ -27,8 +26,6 @@ public class CadastroTecnologiaGUI extends JFrame implements ActionListener {
         super("Nova Tecnologia - Cadastro");
         this.app = app;
 
-        listaTecnologias = new ArrayList<>();
-        controleIds = new HashMap<>();
 
         defineFornecedor();
 
@@ -52,6 +49,7 @@ public class CadastroTecnologiaGUI extends JFrame implements ActionListener {
 
         setVisible(true);
     }
+
     private Date criarData(String dataTexto) {
         try {
             return new SimpleDateFormat("dd/MM/yyyy").parse(dataTexto);
@@ -61,9 +59,9 @@ public class CadastroTecnologiaGUI extends JFrame implements ActionListener {
     }
 
     private void defineFornecedor() {
-        app.getFornecedores().add(new Fornecedor(103,"Google", criarData("29/02/2024"), Area.ANDROIDES));
-        app.getFornecedores().add(new Fornecedor(102, "Microsoft", criarData("21/08/2019"),Area.TI));
-        app.getFornecedores().add(new Fornecedor(101, "Oracle", criarData("12/08/2014"),Area.TI));
+        app.getFornecedores().add(new Fornecedor(103, "Google", criarData("29/02/2024"), Area.ANDROIDES));
+        app.getFornecedores().add(new Fornecedor(102, "Microsoft", criarData("21/08/2019"), Area.TI));
+        app.getFornecedores().add(new Fornecedor(101, "Oracle", criarData("12/08/2014"), Area.TI));
     }
 
     private JPanel criarPainelCampos() {
@@ -154,7 +152,7 @@ public class CadastroTecnologiaGUI extends JFrame implements ActionListener {
             String modelo = campoModelo.getText().trim();
             String descricao = campoDesc.getText().trim();
             double valorBase = Double.parseDouble(campoValorBase.getText().trim());
-            double peso =  Double.parseDouble(campoPeso.getText().trim());
+            double peso = Double.parseDouble(campoPeso.getText().trim());
             double temperatura = Double.parseDouble(campoTemperatura.getText().trim());
             Fornecedor fornecedorSelecionado = (Fornecedor) comboFornecedor.getSelectedItem();
             if (aux.isEmpty() || fornecedorSelecionado == null) {
@@ -163,35 +161,32 @@ public class CadastroTecnologiaGUI extends JFrame implements ActionListener {
             if (aux.isEmpty() || campoValorBase.getText().isEmpty()) {
                 throw new IllegalArgumentException("Campos obrigatórios vazios.");
             }
-                long id = Long.parseLong(campoId.getText());
-
-                if (controleIds.containsKey(id)) {
-                    areaMensagens.append(" ERRO DE CADASTRO:\n");
-                    areaMensagens.append(" O identificador (ID)" + id + " já está cadastrado no sistema.\n");
-                    areaMensagens.append(" Tente um ID diferente.");
-                    return;
-                }
+            long id = Long.parseLong(campoId.getText());
 
 
-                Tecnologia novaTec = new Tecnologia(id, nome, modelo, descricao, valorBase, peso, temperatura);
-                novaTec.defineFornecedor(fornecedorSelecionado);
-
-                listaTecnologias.add(novaTec);
-                controleIds.put(id, true);
+            Tecnologia novaTec = new Tecnologia(id, nome, modelo, descricao, valorBase, peso, temperatura);
+            novaTec.defineFornecedor(fornecedorSelecionado);
+            if (app.cadastrarTecnologia(novaTec)) {
                 areaMensagens.append("  -- CADASTRO REALIZADO COM SUCESSO! -- \n");
-                areaMensagens.append("     Nova entidades.Tecnologia: " + novaTec.toString());
-
-            } catch(NumberFormatException e){
-                areaMensagens.append("  ERRO DE ENTRADA:\n");
-                areaMensagens.append("  Os campos ID, Valor Base, Peso e Temperatura devem ser composto apenas por números. Detalhe: " + e.getMessage());
-            } catch(IllegalArgumentException e){
-                areaMensagens.append("  ERRO DE VALIDAÇÃO:\n");
-                areaMensagens.append("    " + e.getMessage());
-            } catch(Exception e){
-                areaMensagens.append(" ERRO NO SISTEMA:\n");
-                areaMensagens.append(" Detalhes: " + e.getMessage());
+                areaMensagens.append("     Nova Tecnologia: " + novaTec);
+            } else {
+                areaMensagens.append(" ERRO DE CADASTRO:\n");
+                areaMensagens.append(" O identificador (ID)" + id + " já está cadastrado no sistema.\n");
+                areaMensagens.append(" Tente um ID diferente.");
             }
+
+
+        } catch (NumberFormatException e) {
+            areaMensagens.append("  ERRO DE ENTRADA:\n");
+            areaMensagens.append("  Os campos ID, Valor Base, Peso e Temperatura devem ser composto apenas por números. Detalhe: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            areaMensagens.append("  ERRO DE VALIDAÇÃO:\n");
+            areaMensagens.append("    " + e.getMessage());
+        } catch (Exception e) {
+            areaMensagens.append(" ERRO NO SISTEMA:\n");
+            areaMensagens.append(" Detalhes: " + e.getMessage());
         }
+    }
 
 
     private void limparCampos() {
@@ -207,17 +202,16 @@ public class CadastroTecnologiaGUI extends JFrame implements ActionListener {
     }
 
     private void mostrarTodosCadastros() {
+        Set<Tecnologia> tecnologias = app.getTecnologias();
         areaMensagens.setText("");
 
-        if (listaTecnologias.isEmpty()) {
+        if (tecnologias.isEmpty()) {
             areaMensagens.append("Nenhuma tecnologia cadastrada ainda.");
             return;
         }
 
-        Collections.sort(listaTecnologias);
-
-        areaMensagens.append("--- Tecnologias Cadastradas (" + listaTecnologias.size() + ") ---\n");
-        for (Tecnologia t : listaTecnologias) {
+        areaMensagens.append("--- Tecnologias Cadastradas (" + tecnologias.size() + ") ---\n");
+        for (Tecnologia t : tecnologias) {
             areaMensagens.append(t.toString() + "\n");
         }
         areaMensagens.append("--------------------------------------------------");
