@@ -1,5 +1,6 @@
 package gui;
 
+import aplicacao.ACMETech;
 import entidades.Area;
 import entidades.Fornecedor;
 import entidades.Tecnologia;
@@ -20,10 +21,12 @@ public class CadastroTecnologiaGUI extends JFrame implements ActionListener {
     private ArrayList<Tecnologia> listaTecnologias;
     private HashMap<Long, Boolean> controleIds;
     private ArrayList<Fornecedor> listaFornecedores;
+    private ACMETech app;
 
 
-    public CadastroTecnologiaGUI() {
+    public CadastroTecnologiaGUI(ACMETech app) {
         super("Nova entidades.Tecnologia - Cadastro");
+        this.app = app;
 
         listaTecnologias = new ArrayList<>();
         controleIds = new HashMap<>();

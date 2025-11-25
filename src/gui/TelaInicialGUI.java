@@ -168,7 +168,7 @@ public class TelaInicialGUI extends JFrame {
         });
         botaoTecnologia.addActionListener(e -> {
             if (cadastroTecnologiaGUI == null) {
-                cadastroTecnologiaGUI = new CadastroTecnologiaGUI();
+                cadastroTecnologiaGUI = new CadastroTecnologiaGUI(app);
 
                 cadastroTecnologiaGUI.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
@@ -184,7 +184,7 @@ public class TelaInicialGUI extends JFrame {
         });
         botaoComprador.addActionListener(e -> {
             if (cadastroCompradorGUI == null) {
-                cadastroCompradorGUI = new CadastroCompradorGUI();
+                cadastroCompradorGUI = new CadastroCompradorGUI(app);
 
                 cadastroCompradorGUI.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override

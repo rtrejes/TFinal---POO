@@ -1,25 +1,27 @@
 package gui;
 
+import aplicacao.ACMETech;
+import entidades.Comprador;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class CadastroCompradorGUI extends JFrame {
 
     private JTextField campoCod, campoNome, campoPais, campoEmail;
     private JTextArea areaLog;
     private JButton botaoGravar, botaoLimpar, botaoListar, botaoSair;
+    private ACMETech app;
 
-    private Set<Comprador> cadastroDeCompradores;
 
-    public CadastroCompradorGui() {
+    public CadastroCompradorGUI(ACMETech app) {
         super("Cadastro de Comprador");
+        this.app = app;
 
-        this.cadastroDeCompradores = new TreeSet<>();
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(700, 500);
         setLayout(new BorderLayout(10, 10));
 
@@ -75,7 +77,7 @@ public class CadastroCompradorGUI extends JFrame {
         botaoGravar.addActionListener(this::executarCadastro);
         botaoLimpar.addActionListener(this::resetarCampos);
         botaoListar.addActionListener(this::apresentarRelatorio);
-        botaoSair.addActionListener(e -> encerrarAplicacao());
+        botaoSair.addActionListener(e -> encerrarJanela());
 
         painel.add(botaoGravar);
         painel.add(botaoLimpar);
@@ -99,16 +101,14 @@ public class CadastroCompradorGUI extends JFrame {
                 return;
             }
 
-            boolean codigoRepetido = cadastroDeCompradores.stream().anyMatch(c -> c.getCod() == cod);
-
-            if (codigoRepetido) {
-                areaLog.setText("Erro: Código " + cod + " já cadastrado no sistema.");
+            if (app.cadastrarComprador(cod,nome,pais,email)) {
+                areaLog.setText("Comprador cadastrado com sucesso!\n");
+                campoCod.setText("");
+                campoNome.setText("");
+                campoPais.setText("");
+                campoEmail.setText("");
             } else {
-                Comprador novoComprador = new Comprador(cod, nome, pais, email);
-                cadastroDeCompradores.add(novoComprador);
-                areaLog.setText("Comprador cadastrado com sucesso:\n" + novoComprador.toString());
-                resetarCampos(null);
-                campoCod.requestFocus();
+                areaLog.setText("Erro: Código " + cod + " já cadastrado no sistema.");
             }
 
         } catch (NumberFormatException ex) {
@@ -130,22 +130,23 @@ public class CadastroCompradorGUI extends JFrame {
     private void apresentarRelatorio(ActionEvent e) {
         areaLog.setText("");
 
-        if (cadastroDeCompradores.isEmpty()) {
+        Set<Comprador> compradores = app.getCompradores();
+
+        if (compradores.isEmpty()) {
             areaLog.setText("Não há compradores cadastrados no sistema.");
             return;
         }
 
         StringBuilder sb = new StringBuilder();
         sb.append("--- Relatório de Compradores (Ordenado por Código) ---\n");
-        for (Comprador c : cadastroDeCompradores) {
+        for (Comprador c : compradores) {
             sb.append(c.toString()).append("\n");
         }
         sb.append("---------------------------------------------------------");
         areaLog.setText(sb.toString());
     }
 
-    private void encerrarAplicacao() {
+    private void encerrarJanela() {
         dispose();
-        System.exit(0);
     }
 }

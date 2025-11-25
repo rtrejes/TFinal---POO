@@ -20,6 +20,10 @@ public class ACMETech {
         return fornecedores;
     }
 
+    public Set<Comprador> getCompradores() {
+        return compradores;
+    }
+
     public boolean cadastrarFornecedor(long codigo, String nome, Date fundacao, Area area) {
         Fornecedor fornecedor = new Fornecedor(codigo, nome, fundacao, area);
         return fornecedores.add(fornecedor);
@@ -71,5 +75,10 @@ public class ACMETech {
 
     public void executar() {
         new TelaInicialGUI(this).setVisible(true);
+    }
+
+    public boolean cadastrarComprador(long cod, String nome, String pais, String email) {
+        Comprador novoComprador = new Comprador(cod, nome, pais, email);
+        return compradores.add(novoComprador);
     }
 }

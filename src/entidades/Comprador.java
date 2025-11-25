@@ -11,6 +11,7 @@ public class Comprador extends Participante implements Comparable<Comprador> {
         this.email = email;
     }
 
+
     public String getPais() {
         return pais;
     }
