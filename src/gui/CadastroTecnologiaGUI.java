@@ -20,12 +20,11 @@ public class CadastroTecnologiaGUI extends JFrame implements ActionListener {
     private JButton btnCadastrar, btnLimpar, btnMostrarTodos, btnFechar;
     private ArrayList<Tecnologia> listaTecnologias;
     private HashMap<Long, Boolean> controleIds;
-    private ArrayList<Fornecedor> listaFornecedores;
     private ACMETech app;
 
 
     public CadastroTecnologiaGUI(ACMETech app) {
-        super("Nova entidades.Tecnologia - Cadastro");
+        super("Nova Tecnologia - Cadastro");
         this.app = app;
 
         listaTecnologias = new ArrayList<>();
@@ -62,11 +61,9 @@ public class CadastroTecnologiaGUI extends JFrame implements ActionListener {
     }
 
     private void defineFornecedor() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        listaFornecedores = new ArrayList<>();
-        listaFornecedores.add(new Fornecedor(103,"Google", criarData("29/02/2024"), Area.ANDROIDES));
-        listaFornecedores.add(new Fornecedor(102, "Microsoft", criarData("21/08/2019"),Area.TI));
-        listaFornecedores.add(new Fornecedor(101, "Oracle", criarData("12/08/2014"),Area.TI));
+        app.getFornecedores().add(new Fornecedor(103,"Google", criarData("29/02/2024"), Area.ANDROIDES));
+        app.getFornecedores().add(new Fornecedor(102, "Microsoft", criarData("21/08/2019"),Area.TI));
+        app.getFornecedores().add(new Fornecedor(101, "Oracle", criarData("12/08/2014"),Area.TI));
     }
 
     private JPanel criarPainelCampos() {
@@ -105,7 +102,7 @@ public class CadastroTecnologiaGUI extends JFrame implements ActionListener {
         painel.add(new JLabel("Selecione o fornecedor:"));
 
         comboFornecedor = new JComboBox<>();
-        for (Fornecedor f : listaFornecedores) {
+        for (Fornecedor f : app.getFornecedores()) {
             comboFornecedor.addItem(f);
         }
         painel.add(comboFornecedor);

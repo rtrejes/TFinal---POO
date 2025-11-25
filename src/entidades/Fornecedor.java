@@ -35,4 +35,8 @@ public class Fornecedor extends Participante implements Comparable<Fornecedor>{
                 area
         );
     }
+    @Override
+    public String toString() {
+        return this.getNome();
+    }
 }

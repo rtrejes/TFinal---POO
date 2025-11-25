@@ -25,8 +25,18 @@ public class ACMETech {
     }
 
     public boolean cadastrarFornecedor(long codigo, String nome, Date fundacao, Area area) {
-        Fornecedor fornecedor = new Fornecedor(codigo, nome, fundacao, area);
-        return fornecedores.add(fornecedor);
+        Fornecedor novoFornecedor = new Fornecedor(codigo, nome, fundacao, area);
+        return fornecedores.add(novoFornecedor);
+    }
+
+    public boolean cadastrarComprador(long cod, String nome, String pais, String email) {
+        Comprador novoComprador = new Comprador(cod, nome, pais, email);
+        return compradores.add(novoComprador);
+    }
+
+    public boolean cadastrarTecnologia(long id, String nome, String modelo, String descricao, double valorBase, double peso, double temperatura) {
+        Tecnologia novaTecnologia = new Tecnologia(id, nome, modelo, descricao, valorBase, peso, temperatura);
+        return tecnologias.add(novaTecnologia);
     }
 
     public boolean cadastrarVenda(long num, Date data, double valor, Fornecedor fornecedor, Tecnologia tecnologia, Comprador comprador, int quantidadeVendas) {
@@ -75,10 +85,5 @@ public class ACMETech {
 
     public void executar() {
         new TelaInicialGUI(this).setVisible(true);
-    }
-
-    public boolean cadastrarComprador(long cod, String nome, String pais, String email) {
-        Comprador novoComprador = new Comprador(cod, nome, pais, email);
-        return compradores.add(novoComprador);
     }
 }

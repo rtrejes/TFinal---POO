@@ -30,7 +30,12 @@ public class Comprador extends Participante implements Comparable<Comprador> {
 
     @Override
     public String geraDescricao() {
-        return getCod() + ";" + getNome() + ";" + pais + ";" + email;
+        return String.format("%d;%s;%s;%s",
+                this.getCod(),
+                this.getNome(),
+                this.getPais(),
+                this.getEmail()
+        );
     }
 
     @Override

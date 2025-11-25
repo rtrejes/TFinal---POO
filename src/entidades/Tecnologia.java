@@ -84,11 +84,18 @@ public class Tecnologia implements Comparable<Tecnologia> {
                 ",\n Valor Base: " + valorBase +
                 ",\n Peso: " + peso +
                 ",\n Temperatura: " + temperatura +
-                (fornecedorSelecionado != null ? ", entidades.Fornecedor: " + fornecedorSelecionado.getNome() : "");
+                (fornecedorSelecionado != null ? ", Fornecedor: " + fornecedorSelecionado.getNome() : "");
     }
 
     public String geraDescricao() {
-        return null; // TODO
+        return String.format("%s;%s;%s;%2f;%s;%s",
+                this.getModelo(),
+                this.getDescricao(),
+                this.getValorBase(),
+                this.getPeso(),
+                this.getTemperatura(),
+                (fornecedorSelecionado != null ? ", Fornecedor: " + fornecedorSelecionado.getNome() : "")
+        );
     }
 
     @Override
