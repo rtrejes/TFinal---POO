@@ -107,6 +107,7 @@ public class AlterarCompradorGUI extends JFrame {
 
             txtNome.setText(comprador.getNome());
             txtEmail.setText(comprador.getEmail());
+            txtPais.setText(comprador.getPais());
 
             habilitarDesabilitarCampos(true);
             txtMensagens.append("Comprador encontrado. Edite os dados e clique em Alterar.\n");
