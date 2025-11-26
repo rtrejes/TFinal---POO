@@ -46,7 +46,9 @@ public class CadastroFornecedorGUI extends JFrame {
 
         txtMensagens = new JTextArea(5,5);
         txtMensagens.setEditable(false);
-        add(new JScrollPane(txtMensagens), BorderLayout.CENTER);
+        JScrollPane scrollLog = new JScrollPane(txtMensagens);
+        scrollLog.setBorder(BorderFactory.createTitledBorder("Área de Logs e Cadastros"));
+        add(scrollLog, BorderLayout.CENTER);
 
         // BOTÕES
 

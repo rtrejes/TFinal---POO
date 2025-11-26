@@ -139,8 +139,6 @@ public class CadastroTecnologiaGUI extends JFrame implements ActionListener {
 
         try {
             String aux = campoId.getText().trim();
-            //int id = Integer.parseInt(campoId.getText().trim());
-            String nome = campoNome.getText().trim();
             String modelo = campoModelo.getText().trim();
             String descricao = campoDesc.getText().trim();
             double valorBase = Double.parseDouble(campoValorBase.getText().trim());

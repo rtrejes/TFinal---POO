@@ -96,7 +96,8 @@ public class Tecnologia implements Comparable<Tecnologia> {
     }
 
     public String geraDescricao() {
-        return String.format("%s;%s;%s;%.2f;%.2f;%s",
+        return String.format("%d;%s;%s;%s;%.2f;%.2f;%s",
+                this.getId(),
                 this.getModelo(),
                 this.getDescricao(),
                 this.getValorBase(),

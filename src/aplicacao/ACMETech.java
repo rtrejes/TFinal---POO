@@ -4,7 +4,6 @@ import entidades.*;
 import gui.*;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -144,10 +143,10 @@ public class ACMETech {
         return tecnologias.add(novaTecnologia);
     }
 
-    public boolean cadastrarVenda(long num, Date data, long cod, long id) {
-        Tecnologia tecnologia = tecnologias.stream().filter(t -> t.getId() == id).findFirst().orElseThrow();
-        Comprador comprador = compradores.stream().filter(c -> c.getCod() == cod).findFirst().orElseThrow();
-        Venda v = new Venda(num, data, tecnologia, comprador, calculaQuantidadeVendas(cod));
+    public boolean cadastrarVenda(long num, Date data, long codComprador, long idTecnologia) {
+        Tecnologia tecnologia = tecnologias.stream().filter(t -> t.getId() == idTecnologia).findFirst().orElseThrow();
+        Comprador comprador = compradores.stream().filter(c -> c.getCod() == codComprador).findFirst().orElseThrow();
+        Venda v = new Venda(num, data, tecnologia, comprador, calculaQuantidadeVendas(codComprador));
         return vendas.add(v);
     }
 
@@ -544,4 +543,21 @@ public class ACMETech {
         return sb.toString();
     }
 
+    public boolean verificaExistencia(long codigo, Relatorio relatorio) {
+        switch (relatorio) {
+            case TECNOLOGIA -> {
+                return tecnologias.stream().anyMatch(t -> t.getId() == codigo);
+            }
+            case COMPRADOR -> {
+                return compradores.stream().anyMatch(c -> c.getCod() == codigo);
+            }
+            case VENDA -> {
+                return vendas.stream().anyMatch(v -> v.getNum() == codigo);
+            }
+            case FORNECEDOR ->{
+                return fornecedores.stream().anyMatch(f -> f.getCod() == codigo);
+            }
+        }
+        return false;
+    }
 }
