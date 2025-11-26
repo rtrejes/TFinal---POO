@@ -1,31 +1,34 @@
 package entidades;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Venda implements Comparable<Venda>{
+public class Venda implements Comparable<Venda> {
     private long num;
     private Date data;
     private double valorFinal;
-    private Fornecedor fornecedor;
     private Tecnologia tecnologia;
     private Comprador comprador;
-    private int quantidadeVendas;
+    private long quantidadeVendas;
 
-    public Venda(long num, Date data, double valor, Fornecedor fornecedor, Tecnologia tecnologia, Comprador comprador, int quantidadeVendas) {
+    public Venda(long num, Date data, Tecnologia tecnologia, Comprador comprador, long quantidadeVendas) {
         this.num = num;
         this.data = data;
-        this.fornecedor = fornecedor;
         this.tecnologia = tecnologia;
         this.comprador = comprador;
-        this.quantidadeVendas = quantidadeVendas + 1;
-        this.valorFinal = calculaValorFinal(valor, quantidadeVendas);
+        this.quantidadeVendas = quantidadeVendas;
+        this.valorFinal = calculaValorFinal(tecnologia.getValorBase(), quantidadeVendas);
     }
 
-    public double calculaValorFinal(double valor, int quantidadeVendas){
+    public double calculaValorFinal(double valor, long quantidadeVendas) {
         if (quantidadeVendas >= 10) {
-            return valor * fornecedor.getArea().getValorBaseAcrescimo() * 1.1;
+            return valor * tecnologia.getFornecedor().getArea().getValorBaseAcrescimo() * 1.1;
         }
-        return valor * fornecedor.getArea().getValorBaseAcrescimo() * (1+(0.1*quantidadeVendas));
+        return valor * tecnologia.getFornecedor().getArea().getValorBaseAcrescimo() * (1 + (0.01 * quantidadeVendas));
+    }
+
+    public long getNum() {
+        return num;
     }
 
     public Date getData() {
@@ -38,19 +41,27 @@ public class Venda implements Comparable<Venda>{
 
 
     public String geraDescricao() {
-        return ""; // TODO
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        /*
+        return this.num + ";"
+                + sdf.format(data) + ";"
+                + this.getTecnologia().geraDescricao() + ";"
+                + this.getComprador().geraDescricao() + ";"
+                + this.valorFinal + ";"
+                + this.quantidadeVendas;*/
+        return String.format("%d;%s;%s;%s;%.2f;%d",
+                this.num,
+                sdf.format(data),
+                this.getTecnologia().geraDescricao(),
+                this.getComprador().geraDescricao(),
+                this.valorFinal,
+                this.quantidadeVendas
+        );
     }
+
 
     public Comprador getComprador() {
         return comprador;
-    }
-
-    public Fornecedor getFornecedor() {
-        return fornecedor;
-    }
-
-    public int getQuantidadeVendas() {
-        return quantidadeVendas;
     }
 
     public Tecnologia getTecnologia() {

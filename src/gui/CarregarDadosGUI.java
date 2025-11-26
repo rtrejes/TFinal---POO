@@ -5,27 +5,25 @@ import aplicacao.ACMETech;
 import javax.swing.*;
 import java.awt.*;
 
-public class RemoverVendaGUI extends JFrame {
+public class CarregarDadosGUI extends JFrame {
     private ACMETech app;
-    private JTextField txtNumeroVenda;
+    private JTextField txtNomeArquivo;
     private JTextArea txtMensagens;
 
-    public RemoverVendaGUI(ACMETech app) {
-        super("Remover Venda");
+    public CarregarDadosGUI(ACMETech app) {
+        super("Carregar Dados");
         this.app = app;
 
         setLayout(new BorderLayout(10, 10));
 
-        // Painel de campos
         JPanel painelCampos = new JPanel(new GridLayout(1, 2, 5, 5));
 
-        painelCampos.add(new JLabel("Número da venda:"));
-        txtNumeroVenda = new JTextField();
-        painelCampos.add(txtNumeroVenda);
+        painelCampos.add(new JLabel("Nome do arquivo (sem extensão):"));
+        txtNomeArquivo = new JTextField();
+        painelCampos.add(txtNomeArquivo);
 
         add(painelCampos, BorderLayout.NORTH);
 
-        // Área de mensagens
         txtMensagens = new JTextArea(5, 20);
         txtMensagens.setEditable(false);
         add(new JScrollPane(txtMensagens), BorderLayout.CENTER);
@@ -33,18 +31,18 @@ public class RemoverVendaGUI extends JFrame {
         // Painel de botões
         JPanel painelBotoes = new JPanel(new FlowLayout());
 
-        JButton botaoRemover = new JButton("Remover");
+        JButton botaoCarregar = new JButton("Carregar");
         JButton botaoLimpar = new JButton("Limpar");
         JButton botaoFechar = new JButton("Fechar");
 
-        painelBotoes.add(botaoRemover);
+        painelBotoes.add(botaoCarregar);
         painelBotoes.add(botaoLimpar);
         painelBotoes.add(botaoFechar);
 
         add(painelBotoes, BorderLayout.SOUTH);
 
         // ActionListeners
-        botaoRemover.addActionListener(e -> remover());
+        botaoCarregar.addActionListener(e -> carregar());
         botaoLimpar.addActionListener(e -> limpar());
         botaoFechar.addActionListener(e -> dispose());
 
@@ -53,31 +51,29 @@ public class RemoverVendaGUI extends JFrame {
         setVisible(true);
     }
 
-    private void remover() {
-        String numeroTxt = txtNumeroVenda.getText().trim();
+    private void carregar() {
+        String nome = txtNomeArquivo.getText().trim();
 
-        if (numeroTxt.isEmpty()) {
-            txtMensagens.append("Erro: Digite o número da venda.\n");
+        if (nome.isEmpty()) {
+            txtMensagens.append("Erro: Digite um nome de arquivo.\n");
             return;
         }
 
         try {
-            int numeroVenda = Integer.parseInt(numeroTxt);
-            if (app.removerVenda(numeroVenda)) {
-                txtMensagens.append("Venda " + numeroVenda + " removida com sucesso.\n");
+            if (app.carregarJSON(nome)) {
+                txtMensagens.append("Dados carregados com sucesso do arquivo: " + nome + ".json\n");
             } else {
-                txtMensagens.append("Erro: Não existe venda com o número " + numeroVenda + ".\n");
+                txtMensagens.append("Erro ao carregar os dados. Verifique o arquivo.\n");
             }
 
-        } catch (NumberFormatException ex) {
-            txtMensagens.append("Erro: O número da venda deve ser um inteiro.\n");
         } catch (Exception e) {
             txtMensagens.append("Erro inesperado: " + e.getMessage() + "\n");
         }
     }
 
     private void limpar() {
-        txtNumeroVenda.setText("");
+        txtNomeArquivo.setText("");
         txtMensagens.setText("");
     }
+
 }

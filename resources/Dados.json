@@ -1,0 +1,131 @@
+{
+"fornecedores": [
+  {
+   "cod": 1,
+   "nome": "Stark Industries",
+   "fundacao": "05/05/2005",
+   "area": "EMERGENTE"
+  },
+  {
+   "cod": 4,
+   "nome": "ACME Corp.",
+   "fundacao": "03/03/1993",
+   "area": "EMERGENTE"
+  },
+  {
+   "cod": 5,
+   "nome": "Wayne Enterprises",
+   "fundacao": "04/04/1984",
+   "area": "EMERGENTE"
+  },
+  {
+   "cod": 123456,
+   "nome": "MarceloYamagutiCORP.",
+   "fundacao": "12/08/1967",
+   "area": "TI"
+  }
+],
+"tecnologias": [
+  {
+   "id": 101,
+   "modelo": "100 T Anvil",
+   "descricao": "Bigorna de 100 toneladas",
+   "valorBase": 101.01,
+   "peso": 100.1,
+   "temperatura": 2000.2,
+   "fornecedor": 4
+  },
+  {
+   "id": 202,
+   "modelo": "FR armor",
+   "descricao": "Armadura resistente a fogo",
+   "valorBase": 202.02,
+   "peso": 200.2,
+   "temperatura": 6000.6,
+   "fornecedor": 5
+  },
+  {
+   "id": 303,
+   "modelo": "Jericho",
+   "descricao": "Missil anti-missil",
+   "valorBase": 303.03,
+   "peso": 300.3,
+   "temperatura": 3000.3,
+   "fornecedor": 1
+  },
+  {
+   "id": 444,
+   "modelo": "Bird trap",
+   "descricao": "Armadilha para passaros",
+   "valorBase": 444.44,
+   "peso": 404.4,
+   "temperatura": 400.4,
+   "fornecedor": 4
+  },
+  {
+   "id": 555,
+   "modelo": "Shark repellent",
+   "descricao": "Repelente de tubarao",
+   "valorBase": 555.55,
+   "peso": 505.5,
+   "temperatura": 50.5,
+   "fornecedor": 5
+  }
+],
+"compradores": [
+  {
+   "cod": 22,
+   "nome": "Coyote",
+   "pais": "Estados Unidos da America",
+   "email": "coyote@toons.com"
+  },
+  {
+   "cod": 44,
+   "nome": "Alianca rebelde",
+   "pais": "Marrocos",
+   "email": "rebelally@email.com"
+  }
+],
+"vendas": [
+  {
+   "num": 8888,
+   "data": "08/08/2018",
+   "valorFinal": 694.4375,
+   "tecnologia": 555,
+   "comprador": 44,
+   "quantidadeVendas": 3
+  },
+  {
+   "num": 7777,
+   "data": "07/07/2017",
+   "valorFinal": 255.05025,
+   "tecnologia": 202,
+   "comprador": 44,
+   "quantidadeVendas": 3
+  },
+  {
+   "num": 6666,
+   "data": "04/04/2024",
+   "valorFinal": 126.2625,
+   "tecnologia": 101,
+   "comprador": 22,
+   "quantidadeVendas": 2
+  },
+  {
+   "num": 5555,
+   "data": "01/01/2021",
+   "valorFinal": 386.36325,
+   "tecnologia": 303,
+   "comprador": 44,
+   "quantidadeVendas": 3
+  },
+  {
+   "num": 3333,
+   "data": "03/03/2023",
+   "valorFinal": 561.1055,
+   "tecnologia": 444,
+   "comprador": 22,
+   "quantidadeVendas": 2
+  }
+]
+}

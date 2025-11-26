@@ -48,4 +48,5 @@ public class Comprador extends Participante implements Comparable<Comprador> {
         return "Código: " + getCod() + ", Nome: " + getNome() +
                 ", País: " + pais + ", Email: " + email;
     }
+
 }

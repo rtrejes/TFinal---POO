@@ -21,13 +21,10 @@ public class CadastroTecnologiaGUI extends JFrame implements ActionListener {
     private JButton btnCadastrar, btnLimpar, btnMostrarTodos, btnFechar;
     private ACMETech app;
 
-
     public CadastroTecnologiaGUI(ACMETech app) {
         super("Nova Tecnologia - Cadastro");
         this.app = app;
 
-
-        defineFornecedor();
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(700, 600);
@@ -58,11 +55,6 @@ public class CadastroTecnologiaGUI extends JFrame implements ActionListener {
         }
     }
 
-    private void defineFornecedor() {
-        app.getFornecedores().add(new Fornecedor(103, "Google", criarData("29/02/2024"), Area.ANDROIDES));
-        app.getFornecedores().add(new Fornecedor(102, "Microsoft", criarData("21/08/2019"), Area.TI));
-        app.getFornecedores().add(new Fornecedor(101, "Oracle", criarData("12/08/2014"), Area.TI));
-    }
 
     private JPanel criarPainelCampos() {
         JPanel painel = new JPanel(new GridLayout(8, 2, 10, 10));
@@ -164,11 +156,11 @@ public class CadastroTecnologiaGUI extends JFrame implements ActionListener {
             long id = Long.parseLong(campoId.getText());
 
 
-            Tecnologia novaTec = new Tecnologia(id, nome, modelo, descricao, valorBase, peso, temperatura);
+            Tecnologia novaTec = new Tecnologia(id, modelo, descricao, valorBase, peso, temperatura);
             novaTec.defineFornecedor(fornecedorSelecionado);
             if (app.cadastrarTecnologia(novaTec)) {
                 areaMensagens.append("  -- CADASTRO REALIZADO COM SUCESSO! -- \n");
-                areaMensagens.append("     Nova Tecnologia: " + novaTec);
+                areaMensagens.append("Nova Tecnologia: " + novaTec);
             } else {
                 areaMensagens.append(" ERRO DE CADASTRO:\n");
                 areaMensagens.append(" O identificador (ID)" + id + " já está cadastrado no sistema.\n");

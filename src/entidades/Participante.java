@@ -1,8 +1,7 @@
 package entidades;
 import java.io.Serializable;
 
-public abstract class Participante implements Serializable {
-    private static final long serialVersionUID = 1L;
+public abstract class Participante {
 
     private long cod;
     private String nome;
@@ -20,7 +19,7 @@ public abstract class Participante implements Serializable {
         return nome;
     }
 
-    public void setNome(String nome) {
+    public void setNome(String nome){
         this.nome = nome;
     }
 

@@ -20,7 +20,8 @@ public class TelaInicialGUI extends JFrame {
     private RemoverVendaGUI removerVendaGUI;
     private AlterarCompradorGUI alterarCompradorGUI;
     private ConsultaMaiorGUI consultaMaiorGUI;
-    private Clip clipMusica;
+    private SalvarDadosGUI salvarDadosGUI;
+    private CarregarDadosGUI carregarDadosGUI;
 
     public TelaInicialGUI(ACMETech app) {
         super("ACMETech - Venda de tecnologias");
@@ -67,7 +68,7 @@ public class TelaInicialGUI extends JFrame {
         JButton botaoCarregar = new JButton("Carregar Dados");
 
         JButton botaoSair = new JButton("Finalizar Sistema");
-        botaoSair.setPreferredSize(new Dimension(300, 80));
+        botaoSair.setPreferredSize(new Dimension(250, 60));
 
 
         // Panels
@@ -112,21 +113,18 @@ public class TelaInicialGUI extends JFrame {
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.weightx = 0;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 0, 0, 20);
         painelInferior.add(labelEsquerda, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 0;
-        gbc.weightx = 1;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.insets = new Insets(0, 0, 0, 0);
         painelInferior.add(botaoSair, gbc);
 
         gbc.gridx = 2;
         gbc.gridy = 0;
-        gbc.weightx = 0;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.insets = new Insets(0, 20, 0, 0);
         painelInferior.add(labelFoto, gbc);
@@ -224,7 +222,7 @@ public class TelaInicialGUI extends JFrame {
             // Remover/Alterar/Consultar
         botaoRemoverVenda.addActionListener(e -> {
             if (removerVendaGUI == null) {
-                removerVendaGUI = new RemoverVendaGUI();
+                removerVendaGUI = new RemoverVendaGUI(app);
 
                 removerVendaGUI.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
@@ -240,7 +238,7 @@ public class TelaInicialGUI extends JFrame {
         });
         botaoAlterarComprador.addActionListener(e -> {
             if (alterarCompradorGUI == null) {
-                alterarCompradorGUI = new AlterarCompradorGUI();
+                alterarCompradorGUI = new AlterarCompradorGUI(app);
 
                 alterarCompradorGUI.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
@@ -256,7 +254,7 @@ public class TelaInicialGUI extends JFrame {
         });
         botaoConsultaMaior.addActionListener(e -> {
             if (consultaMaiorGUI == null) {
-                consultaMaiorGUI = new ConsultaMaiorGUI();
+                consultaMaiorGUI = new ConsultaMaiorGUI(app);
 
                 consultaMaiorGUI.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
@@ -272,18 +270,48 @@ public class TelaInicialGUI extends JFrame {
         });
 
             // Salvar e Carregar
-        botaoSalvar.addActionListener(e -> JOptionPane.showMessageDialog(this, "Salvar dados ainda precisa ser implementado!"));        // TODO
-        botaoCarregar.addActionListener(e -> JOptionPane.showMessageDialog(this, "Carregar dados ainda precisa ser implementado!"));    // TODO
+        botaoSalvar.addActionListener(e -> {
+            if (salvarDadosGUI == null) {
+                salvarDadosGUI = new SalvarDadosGUI(app);
+
+                salvarDadosGUI.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        salvarDadosGUI = null;
+                    }
+                });
+            } else {
+                salvarDadosGUI.toFront();
+                salvarDadosGUI.requestFocus();
+            }
+            salvarDadosGUI.setVisible(true);
+        });
+        botaoCarregar.addActionListener(e -> {
+            if (carregarDadosGUI == null) {
+                carregarDadosGUI = new CarregarDadosGUI(app);
+
+                carregarDadosGUI.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        carregarDadosGUI = null;
+                    }
+                });
+            } else {
+                carregarDadosGUI.toFront();
+                carregarDadosGUI.requestFocus();
+            }
+            carregarDadosGUI.setVisible(true);
+        });
 
             // Encerrar
         botaoSair.addActionListener(e -> System.exit(0));
 
-        tocarMusica("resources/Background_calm.wav");
+        tocarMusica();
     }
 
     private void abrirRelatorio(String tituloJanela, Relatorio relatorio) {
         if (relatoriosGUI == null) {
-            relatoriosGUI = new RelatoriosGUI(app);
+            relatoriosGUI = new RelatoriosGUI(app, relatorio);
 
             relatoriosGUI.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
@@ -302,10 +330,10 @@ public class TelaInicialGUI extends JFrame {
     }
 
 
-    private void tocarMusica(String pathMusica) {
+    private void tocarMusica() {
         try {
-            AudioInputStream audio = AudioSystem.getAudioInputStream(new java.io.File(pathMusica));
-            clipMusica = AudioSystem.getClip();
+            AudioInputStream audio = AudioSystem.getAudioInputStream(new java.io.File("resources/Background_calm.wav"));
+            Clip clipMusica = AudioSystem.getClip();
             clipMusica.open(audio);
             FloatControl volume = (FloatControl) clipMusica.getControl(FloatControl.Type.MASTER_GAIN);
             volume.setValue(-20.0f);

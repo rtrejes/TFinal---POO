@@ -4,5 +4,5 @@ public enum Relatorio {
     FORNECEDOR,
     TECNOLOGIA,
     COMPRADOR,
-    VENDA;
+    VENDA
 }
