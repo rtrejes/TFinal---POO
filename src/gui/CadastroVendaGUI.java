@@ -1,7 +1,9 @@
 package gui;
 
 import aplicacao.ACMETech;
+import entidades.Comprador;
 import entidades.Relatorio;
+import entidades.Tecnologia;
 import entidades.Venda;
 
 import javax.swing.*;
@@ -14,7 +16,9 @@ import java.util.Set;
 
 public class CadastroVendaGUI extends JFrame {
 
-    private JTextField campoNum, campoData, campoCod, campoId;
+    private JTextField campoNum, campoData;
+    private JComboBox<Tecnologia> campoCod;
+    private JComboBox<Comprador> campoId;
     private JTextArea areaLog;
     private JButton botaoGravar, botaoLimpar, botaoListar, botaoSair;
     private ACMETech app;
@@ -50,8 +54,11 @@ public class CadastroVendaGUI extends JFrame {
 
         campoNum = new JTextField(25);
         campoData = new JTextField(25);
-        campoCod = new JTextField(25);
-        campoId = new JTextField(25);
+        campoCod = new JComboBox<>(app.getTecnologias().toArray(new Tecnologia[0]));
+        ACMERender render = new ACMERender();
+        campoCod.setRenderer(render);
+        campoId = new JComboBox<>(app.getCompradores().toArray(new Comprador[0]));
+        campoId.setRenderer(render);
 
         painel.add(new JLabel("Número da Venda:"));
         painel.add(campoNum);
@@ -59,10 +66,10 @@ public class CadastroVendaGUI extends JFrame {
         painel.add(new JLabel("Data (dd/MM/yyyy):"));
         painel.add(campoData);
 
-        painel.add(new JLabel("Código da Tecnologia:"));
+        painel.add(new JLabel("Tecnologia:"));
         painel.add(campoCod);
 
-        painel.add(new JLabel("Código do Comprador:"));
+        painel.add(new JLabel("Comprador:"));
         painel.add(campoId);
 
 
@@ -98,26 +105,20 @@ public class CadastroVendaGUI extends JFrame {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             String dataLida = campoData.getText().trim();
             Date data = sdf.parse(dataLida);
-            long id = Long.parseLong(campoCod.getText().trim());
-            if (!app.verificaExistencia(id, Relatorio.TECNOLOGIA)){
-                areaLog.setText("Erro: Tecnologia não cadastrada.");
-                return;
-            }
-            long cod = Long.parseLong(campoId.getText().trim());
-            if (!app.verificaExistencia(cod, Relatorio.COMPRADOR)){
-                areaLog.setText("Erro: Comprador não cadastrado.");
-                return;
-            }
+            Tecnologia t = (Tecnologia) campoCod.getSelectedItem();
+            Comprador c = (Comprador) campoId.getSelectedItem();
             if (dataLida.isEmpty()) {
                 areaLog.setText("Erro: A data deve ser preenchida.");
                 return;
             }
-            if (app.cadastrarVenda(num, data, cod, id)) {
+            if (t == null || c == null) {
+                areaLog.setText("Erro: Comprador e tecnologia devem ser selecionados.");
+                return;
+            }
+            if (app.cadastrarVenda(num, data, c.getCod(), t.getId())) {
                 areaLog.setText("Venda cadastrada com sucesso!\n");
                 campoNum.setText("");
                 campoData.setText("");
-                campoCod.setText("");
-                campoId.setText("");
             } else {
                 areaLog.setText("Erro: código já cadastrado! \n");
             }
@@ -133,8 +134,6 @@ public class CadastroVendaGUI extends JFrame {
     private void resetarCampos(ActionEvent e) {
         campoNum.setText("");
         campoData.setText("");
-        campoCod.setText("");
-        campoId.setText("");
         areaLog.setText("");
         campoNum.requestFocus();
     }
